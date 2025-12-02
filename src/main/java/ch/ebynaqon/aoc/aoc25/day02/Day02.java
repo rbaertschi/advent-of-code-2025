@@ -3,32 +3,30 @@ package ch.ebynaqon.aoc.aoc25.day02;
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 interface Day02 {
 
-    static ProblemInput parseProblem(RawProblemInput input) {
-        List<ProblemSample> samples = input.getLines().stream().map(Day02::parseLine).toList();
-        return new ProblemInput(samples);
+    static List<IdRange> parseProblem(RawProblemInput input) {
+        return Stream.of(input.getWholeInput().split(",")).map(Day02::parseRange).toList();
     }
 
-    private static ProblemSample parseLine(String input) {
-        return new ProblemSample(Long.parseLong(input));
+    private static IdRange parseRange(String input) {
+        String[] startAndEnd = input.split("-");
+        return new IdRange(Long.parseLong(startAndEnd[0]), Long.parseLong(startAndEnd[1]));
     }
 
     static long solvePart1(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).min().orElseThrow();
+        List<IdRange> problem = parseProblem(input);
+        return 0;
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).max().orElseThrow();
+        List<IdRange> problem = parseProblem(input);
+        return 0;
     }
 }
 
-record ProblemInput(List<ProblemSample> samples) {
-}
-
-record ProblemSample(long value) {
+record IdRange(long start, long end) {
 }
 
