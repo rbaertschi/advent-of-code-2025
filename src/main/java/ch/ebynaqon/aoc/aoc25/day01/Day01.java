@@ -6,29 +6,21 @@ import java.util.List;
 
 interface Day01 {
 
-    static ProblemInput parseProblem(RawProblemInput input) {
-        List<ProblemSample> samples = input.getLines().stream().map(Day01::parseLine).toList();
-        return new ProblemInput(samples);
+    static List<Integer> parseProblem(RawProblemInput input) {
+        return input.getLines().stream().map(Day01::parseLine).toList();
     }
 
-    private static ProblemSample parseLine(String input) {
-        return new ProblemSample(Long.parseLong(input));
+    private static Integer parseLine(String input) {
+        return (input.startsWith("L") ? -1 : 1) * Integer.parseInt(input.substring(1));
     }
 
     static long solvePart1(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).min().orElseThrow();
+        List<Integer> problem = parseProblem(input);
+        return 0;
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).max().orElseThrow();
+        List<Integer> problem = parseProblem(input);
+        return 0;
     }
 }
-
-record ProblemInput(List<ProblemSample> samples) {
-}
-
-record ProblemSample(long value) {
-}
-

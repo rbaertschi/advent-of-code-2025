@@ -15,16 +15,34 @@ class Day01Test {
     void parseProblemInput() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                L68
+                L30
+                R48
+                L5
+                R60
+                L55
+                L1
+                L99
+                R14
+                L82
                 """);
 
         // when
         var actual = Day01.parseProblem(input);
 
         // then
-        assertThat(actual).isEqualTo(new ProblemInput(List.of(
-                new ProblemSample(42L)
-        )));
+        assertThat(actual).isEqualTo(List.of(
+                -68,
+                -30,
+                48,
+                -5,
+                60,
+                -55,
+                -1,
+                -99,
+                14,
+                -82
+        ));
     }
 
     @Test
