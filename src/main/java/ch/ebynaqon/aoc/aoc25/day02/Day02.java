@@ -3,6 +3,7 @@ package ch.ebynaqon.aoc.aoc25.day02;
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -22,8 +23,7 @@ interface Day02 {
     }
 
     static long solvePart2(RawProblemInput input) {
-        List<IdRange> problem = parseProblem(input);
-        return 0;
+        return parseProblem(input).stream().flatMap(IdRange::invalidIdsWithMoreRepetitions).reduce(0L, Long::sum);
     }
 }
 
@@ -45,10 +45,42 @@ record IdRange(long start, long end) {
 
     private long firstHalf(long start) {
         String asString = String.valueOf(start);
-        if (asString.length() == 1) {
+        int patternLength = asString.length() / 2;
+        return firstPart(start, patternLength);
+    }
+
+    private long firstPart(long number, int patternLength) {
+        if (patternLength == 0) {
             return 1;
         }
-        return Long.parseLong(asString.substring(0, asString.length() / 2));
+        return Long.parseLong(String.valueOf(number).substring(0, patternLength));
     }
+
+    public Stream<Long> invalidIdsWithMoreRepetitions() {
+        HashSet<Long> invalidIds = new HashSet<>();
+        int startLength = String.valueOf(start).length();
+        int endLength = String.valueOf(end).length();
+        for (int patternLength = 1; patternLength <= endLength / 2; patternLength++) {
+            long pattern = Math.min(firstPart(start, patternLength), firstPart(end, patternLength));
+            int minRepetitions = Math.max(2, startLength /  patternLength);
+            int maxRepetitions = endLength / patternLength;
+            while (expand(pattern, minRepetitions) <= end) {
+                for (int repetitions = minRepetitions; repetitions <= maxRepetitions; repetitions++) {
+                    long candidate = expand(pattern, repetitions);
+                    if (candidate >= start &&  candidate <= end) {
+                        invalidIds.add(candidate);
+                        System.out.println(candidate);
+                    }
+                }
+                pattern++;
+            }
+        }
+        return invalidIds.stream();
+    }
+
+    private long expand(long pattern, int repetitions) {
+        return Long.parseLong(String.valueOf(pattern).repeat(repetitions));
+    }
+
 }
 
