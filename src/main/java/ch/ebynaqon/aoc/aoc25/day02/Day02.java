@@ -58,28 +58,33 @@ record IdRange(long start, long end) {
 
     public Stream<Long> invalidIdsWithMoreRepetitions() {
         HashSet<Long> invalidIds = new HashSet<>();
-        int startLength = String.valueOf(start).length();
-        int endLength = String.valueOf(end).length();
+        int startLength = (int) Math.ceil(Math.log10(start + 1));
+        int endLength = (int) Math.ceil(Math.log10(end + 1));
         for (int patternLength = 1; patternLength <= endLength / 2; patternLength++) {
-            long pattern = Math.min(firstPart(start, patternLength), firstPart(end, patternLength));
-            int minRepetitions = Math.max(2, startLength /  patternLength);
-            int maxRepetitions = endLength / patternLength;
-            while (expand(pattern, minRepetitions) <= end) {
+            long minPattern = Math.powExact(10, patternLength - 1);
+            long maxPattern = Math.powExact(10, patternLength) - 1;
+            for (long pattern = minPattern; pattern <= maxPattern; pattern++) {
+                int minRepetitions = Math.max(2, startLength / patternLength);
+                int maxRepetitions = Math.max(2, endLength / patternLength);
                 for (int repetitions = minRepetitions; repetitions <= maxRepetitions; repetitions++) {
                     long candidate = expand(pattern, repetitions);
-                    if (candidate >= start &&  candidate <= end) {
+                    if (candidate >= start && candidate <= end) {
                         invalidIds.add(candidate);
-                        System.out.println(candidate);
                     }
                 }
-                pattern++;
             }
         }
         return invalidIds.stream();
     }
 
     private long expand(long pattern, int repetitions) {
-        return Long.parseLong(String.valueOf(pattern).repeat(repetitions));
+        long result = pattern;
+        // get log 10 of pattern as long
+        int factor = Math.powExact(10, (int) Math.ceil(Math.log10(pattern + 1)));
+        for (int i = 1; i < repetitions; i++) {
+            result = result * factor + pattern;
+        }
+        return result;
     }
 
 }
