@@ -15,8 +15,16 @@ interface Day01 {
     }
 
     static long solvePart1(RawProblemInput input) {
-        List<Integer> problem = parseProblem(input);
-        return 0;
+        List<Integer> rotations = parseProblem(input);
+        int position = 50;
+        int numberOfZeros = 0;
+        for (int rotation : rotations) {
+            position = (100 + (position + rotation) % 100) % 100;
+            if (position == 0) {
+                numberOfZeros++;
+            }
+        }
+        return numberOfZeros;
     }
 
     static long solvePart2(RawProblemInput input) {
