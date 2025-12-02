@@ -18,10 +18,7 @@ interface Day02 {
     }
 
     static long solvePart1(RawProblemInput input) {
-        List<IdRange> problem = parseProblem(input);
-        List<Long> longStream = problem.stream().flatMap(IdRange::invalidIds).toList();
-        longStream.forEach(System.out::println);
-        return longStream.stream().reduce(0L, Long::sum);
+        return parseProblem(input).stream().flatMap(IdRange::invalidIds).reduce(0L, Long::sum);
     }
 
     static long solvePart2(RawProblemInput input) {
@@ -48,6 +45,9 @@ record IdRange(long start, long end) {
 
     private long firstHalf(long start) {
         String asString = String.valueOf(start);
+        if (asString.length() == 1) {
+            return 1;
+        }
         return Long.parseLong(asString.substring(0, asString.length() / 2));
     }
 }
