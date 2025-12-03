@@ -1,7 +1,6 @@
 package ch.ebynaqon.aoc.aoc25.day03;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,6 +47,7 @@ class Day03Test {
                     Arguments.of(new BatteryBank(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1), 92L)
             );
         }
+
         public static Stream<Arguments> batteryBanksWith12BatteriesActive() {
             return Stream.of(
                     Arguments.of(new BatteryBank(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1), 987654321111L),
