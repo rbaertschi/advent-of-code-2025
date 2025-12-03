@@ -16,29 +16,16 @@ interface Day03 {
     }
 
     static long solvePart1(RawProblemInput input) {
-        return parseProblem(input).stream().mapToInt(BatteryBank::getMaxJoltage).sum();
+        return parseProblem(input).stream().mapToLong(batteryBank -> batteryBank.getMaxJoltageWithNBatteries(2)).sum();
     }
 
     static long solvePart2(RawProblemInput input) {
-        List<BatteryBank> problem = parseProblem(input);
-        return 0;
+        return parseProblem(input).stream().mapToLong(batteryBank -> batteryBank.getMaxJoltageWithNBatteries(12)).sum();
     }
 }
 
 
-record BatteryBank(Integer ...joltages) {
-    public int getMaxJoltage() {
-        int maxJoltage = 0;
-        for (int i = 0; i < joltages.length - 1; i++) {
-            for (int j = i + 1; j < joltages.length; j++) {
-                int currentJoltage = joltages[i] * 10 + joltages[j];
-                if (currentJoltage > maxJoltage) {
-                    maxJoltage = currentJoltage;
-                }
-            }
-        }
-        return maxJoltage;
-    }
+record BatteryBank(Integer... joltages) {
 
     @Override
     public boolean equals(Object obj) {
@@ -47,5 +34,28 @@ record BatteryBank(Integer ...joltages) {
         }
         return false;
     }
-}
 
+    public long getMaxJoltageWithNBatteries(int numberOfBatteries) {
+        long[][] cache = new long[joltages.length][numberOfBatteries];
+        for (int i = 0; i < joltages.length; i++) {
+            for (int j = 0; j < numberOfBatteries; j++) {
+                cache[i][j] = -1;
+            }
+        }
+        return getMaxJoltage(0, numberOfBatteries, cache);
+    }
+
+    private long getMaxJoltage(int startIndex, int numberOfBatteriesRemaining, long[][] cache) {
+        if (numberOfBatteriesRemaining == 0) return 0;
+        if (numberOfBatteriesRemaining > joltages.length - startIndex) return 0;
+        if (cache[startIndex][numberOfBatteriesRemaining - 1] > -1) {
+            return cache[startIndex][numberOfBatteriesRemaining - 1];
+        }
+        long power = Math.powExact(10L, numberOfBatteriesRemaining - 1);
+        long maxJoltageWithFirstBattery = joltages[startIndex] * power + getMaxJoltage(startIndex + 1, numberOfBatteriesRemaining - 1, cache);
+        long maxJoltageWithoutFirstBattery = getMaxJoltage(startIndex + 1, numberOfBatteriesRemaining, cache);
+        long max = Math.max(maxJoltageWithFirstBattery, maxJoltageWithoutFirstBattery);
+        cache[startIndex][numberOfBatteriesRemaining - 1] = max;
+        return max;
+    }
+}

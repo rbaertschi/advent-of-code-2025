@@ -40,20 +40,38 @@ class Day03Test {
 
     @Nested
     class BatteryBankTest {
-        public static Stream<Arguments> batteryBanks() {
+        public static Stream<Arguments> batteryBanksWith2BatteriesActive() {
             return Stream.of(
-                    Arguments.of(new BatteryBank(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1), 98),
-                    Arguments.of(new BatteryBank(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9), 89),
-                    Arguments.of(new BatteryBank(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8), 78),
-                    Arguments.of(new BatteryBank(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1), 92)
+                    Arguments.of(new BatteryBank(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1), 98L),
+                    Arguments.of(new BatteryBank(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9), 89L),
+                    Arguments.of(new BatteryBank(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8), 78L),
+                    Arguments.of(new BatteryBank(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1), 92L)
+            );
+        }
+        public static Stream<Arguments> batteryBanksWith12BatteriesActive() {
+            return Stream.of(
+                    Arguments.of(new BatteryBank(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1), 987654321111L),
+                    Arguments.of(new BatteryBank(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9), 811111111119L),
+                    Arguments.of(new BatteryBank(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8), 434234234278L),
+                    Arguments.of(new BatteryBank(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1), 888911112111L)
             );
         }
 
         @ParameterizedTest
-        @MethodSource("batteryBanks")
-        void getMaxJoltage(BatteryBank batteryBank, Integer expectedJoltage) {
+        @MethodSource("batteryBanksWith2BatteriesActive")
+        void getMaxJoltageWithTwoBatteries(BatteryBank batteryBank, Long expectedJoltage) {
             // when
-            int actual = batteryBank.getMaxJoltage();
+            long actual = batteryBank.getMaxJoltageWithNBatteries(2);
+
+            // then
+            assertThat(actual).isEqualTo(expectedJoltage);
+        }
+
+        @ParameterizedTest
+        @MethodSource("batteryBanksWith12BatteriesActive")
+        void getMaxJoltageWithTwelveBatteries(BatteryBank batteryBank, Long expectedJoltage) {
+            // when
+            long actual = batteryBank.getMaxJoltageWithNBatteries(12);
 
             // then
             assertThat(actual).isEqualTo(expectedJoltage);
@@ -90,18 +108,20 @@ class Day03Test {
     }
 
     @Test
-    @Disabled
     void solvePart2UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                987654321111111
+                811111111111119
+                234234234234278
+                818181911112111
                 """);
 
         // when
         var result = Day03.solvePart2(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(3121910778619L);
     }
 
     @Test
