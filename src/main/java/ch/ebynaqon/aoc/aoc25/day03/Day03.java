@@ -12,12 +12,11 @@ interface Day03 {
     }
 
     private static BatteryBank parseLine(String input) {
-        return new BatteryBank(Arrays.stream(input.split("")).map(Integer::parseInt).toList());
+        return new BatteryBank(Arrays.stream(input.split("")).map(Integer::parseInt).toArray(Integer[]::new));
     }
 
     static long solvePart1(RawProblemInput input) {
-        List<BatteryBank> problem = parseProblem(input);
-        return 0;
+        return parseProblem(input).stream().mapToInt(BatteryBank::getMaxJoltage).sum();
     }
 
     static long solvePart2(RawProblemInput input) {
@@ -27,6 +26,26 @@ interface Day03 {
 }
 
 
-record BatteryBank(List<Integer> joltages) {
+record BatteryBank(Integer ...joltages) {
+    public int getMaxJoltage() {
+        int maxJoltage = 0;
+        for (int i = 0; i < joltages.length - 1; i++) {
+            for (int j = i + 1; j < joltages.length; j++) {
+                int currentJoltage = joltages[i] * 10 + joltages[j];
+                if (currentJoltage > maxJoltage) {
+                    maxJoltage = currentJoltage;
+                }
+            }
+        }
+        return maxJoltage;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BatteryBank(Integer[] otherJoltages)) {
+            return List.of(this.joltages).equals(List.of(otherJoltages));
+        }
+        return false;
+    }
 }
 
