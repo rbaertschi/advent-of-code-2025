@@ -2,33 +2,31 @@ package ch.ebynaqon.aoc.aoc25.day03;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
+import java.util.Arrays;
 import java.util.List;
 
 interface Day03 {
 
-    static ProblemInput parseProblem(RawProblemInput input) {
-        List<ProblemSample> samples = input.getLines().stream().map(Day03::parseLine).toList();
-        return new ProblemInput(samples);
+    static List<BatteryBank> parseProblem(RawProblemInput input) {
+        return input.getLines().stream().map(Day03::parseLine).toList();
     }
 
-    private static ProblemSample parseLine(String input) {
-        return new ProblemSample(Long.parseLong(input));
+    private static BatteryBank parseLine(String input) {
+        return new BatteryBank(Arrays.stream(input.split("")).map(Integer::parseInt).toList());
     }
 
     static long solvePart1(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).min().orElseThrow();
+        List<BatteryBank> problem = parseProblem(input);
+        return 0;
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).max().orElseThrow();
+        List<BatteryBank> problem = parseProblem(input);
+        return 0;
     }
 }
 
-record ProblemInput(List<ProblemSample> samples) {
-}
 
-record ProblemSample(long value) {
+record BatteryBank(List<Integer> joltages) {
 }
 

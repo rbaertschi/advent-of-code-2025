@@ -15,16 +15,22 @@ class Day03Test {
     void parseProblemInput() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                987654321111111
+                811111111111119
+                234234234234278
+                818181911112111
                 """);
 
         // when
         var actual = Day03.parseProblem(input);
 
         // then
-        assertThat(actual).isEqualTo(new ProblemInput(List.of(
-                new ProblemSample(42L)
-        )));
+        assertThat(actual).isEqualTo(List.of(
+                new BatteryBank(List.of(9,8,7,6,5,4,3,2,1,1,1,1,1,1,1)),
+                new BatteryBank(List.of(8,1,1,1,1,1,1,1,1,1,1,1,1,1,9)),
+                new BatteryBank(List.of(2,3,4,2,3,4,2,3,4,2,3,4,2,7,8)),
+                new BatteryBank(List.of(8,1,8,1,8,1,9,1,1,1,1,2,1,1,1))
+        ));
     }
 
     @Test
