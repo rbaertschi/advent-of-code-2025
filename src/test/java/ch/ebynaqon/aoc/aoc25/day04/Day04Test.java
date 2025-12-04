@@ -112,7 +112,6 @@ class Day04Test {
     }
 
     @Test
-    @Disabled
     void solvePart1() {
         // given input from https://adventofcode.com/2025/day/4/input
         RawProblemInput input = RawProblemInput.fromResource("/day04.txt");
@@ -121,7 +120,7 @@ class Day04Test {
         var result = Day04.solvePart1(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(1505);
     }
 
     @Test
