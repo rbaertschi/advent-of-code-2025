@@ -1,10 +1,7 @@
 package ch.ebynaqon.aoc.aoc25.day04;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,35 +54,35 @@ class Day04Test {
                 }
         );
 
-        assertThat(map.get(-1,-1)).isEqualTo(0);
-        assertThat(map.get(-1,0)).isEqualTo(0);
-        assertThat(map.get(-1,1)).isEqualTo(0);
-        assertThat(map.get(-1,2)).isEqualTo(0);
-        assertThat(map.get(-1,3)).isEqualTo(0);
+        assertThat(map.get(-1, -1)).isEqualTo(0);
+        assertThat(map.get(-1, 0)).isEqualTo(0);
+        assertThat(map.get(-1, 1)).isEqualTo(0);
+        assertThat(map.get(-1, 2)).isEqualTo(0);
+        assertThat(map.get(-1, 3)).isEqualTo(0);
 
-        assertThat(map.get(0,-1)).isEqualTo(0);
-        assertThat(map.get(0,0)).isEqualTo(0);
-        assertThat(map.get(0,1)).isEqualTo(0);
-        assertThat(map.get(0,2)).isEqualTo(1);
-        assertThat(map.get(0,3)).isEqualTo(0);
+        assertThat(map.get(0, -1)).isEqualTo(0);
+        assertThat(map.get(0, 0)).isEqualTo(0);
+        assertThat(map.get(0, 1)).isEqualTo(0);
+        assertThat(map.get(0, 2)).isEqualTo(1);
+        assertThat(map.get(0, 3)).isEqualTo(0);
 
-        assertThat(map.get(1,-1)).isEqualTo(0);
-        assertThat(map.get(1,0)).isEqualTo(1);
-        assertThat(map.get(1,1)).isEqualTo(1);
-        assertThat(map.get(1,2)).isEqualTo(1);
-        assertThat(map.get(1,3)).isEqualTo(0);
+        assertThat(map.get(1, -1)).isEqualTo(0);
+        assertThat(map.get(1, 0)).isEqualTo(1);
+        assertThat(map.get(1, 1)).isEqualTo(1);
+        assertThat(map.get(1, 2)).isEqualTo(1);
+        assertThat(map.get(1, 3)).isEqualTo(0);
 
-        assertThat(map.get(2,-1)).isEqualTo(0);
-        assertThat(map.get(2,0)).isEqualTo(1);
-        assertThat(map.get(2,1)).isEqualTo(1);
-        assertThat(map.get(2,2)).isEqualTo(0);
-        assertThat(map.get(2,3)).isEqualTo(0);
+        assertThat(map.get(2, -1)).isEqualTo(0);
+        assertThat(map.get(2, 0)).isEqualTo(1);
+        assertThat(map.get(2, 1)).isEqualTo(1);
+        assertThat(map.get(2, 2)).isEqualTo(0);
+        assertThat(map.get(2, 3)).isEqualTo(0);
 
-        assertThat(map.get(3,-1)).isEqualTo(0);
-        assertThat(map.get(3,0)).isEqualTo(0);
-        assertThat(map.get(3,1)).isEqualTo(0);
-        assertThat(map.get(3,2)).isEqualTo(0);
-        assertThat(map.get(3,3)).isEqualTo(0);
+        assertThat(map.get(3, -1)).isEqualTo(0);
+        assertThat(map.get(3, 0)).isEqualTo(0);
+        assertThat(map.get(3, 1)).isEqualTo(0);
+        assertThat(map.get(3, 2)).isEqualTo(0);
+        assertThat(map.get(3, 3)).isEqualTo(0);
     }
 
     @Test
