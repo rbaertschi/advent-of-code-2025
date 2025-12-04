@@ -15,16 +15,36 @@ class Day04Test {
     void parseProblemInput() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                ..@@.@@@@.
+                @@@.@.@.@@
+                @@@@@.@.@@
+                @.@@@@..@.
+                @@.@@@@.@@
+                .@@@@@@@.@
+                .@.@.@.@@@
+                @.@@@.@@@@
+                .@@@@@@@@.
+                @.@.@@@.@.
                 """);
 
         // when
         var actual = Day04.parseProblem(input);
 
         // then
-        assertThat(actual).isEqualTo(new ProblemInput(List.of(
-                new ProblemSample(42L)
-        )));
+        assertThat(actual).usingRecursiveComparison().isEqualTo(new PaperRollMap(
+                new int[][]{
+                        {0, 0, 1, 1, 0, 1, 1, 1, 1, 0},
+                        {1, 1, 1, 0, 1, 0, 1, 0, 1, 1},
+                        {1, 1, 1, 1, 1, 0, 1, 0, 1, 1},
+                        {1, 0, 1, 1, 1, 1, 0, 0, 1, 0},
+                        {1, 1, 0, 1, 1, 1, 1, 0, 1, 1},
+                        {0, 1, 1, 1, 1, 1, 1, 1, 0, 1},
+                        {0, 1, 0, 1, 0, 1, 0, 1, 1, 1},
+                        {1, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+                        {0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+                        {1, 0, 1, 0, 1, 1, 1, 0, 1, 0}
+                }
+        ));
     }
 
     @Test

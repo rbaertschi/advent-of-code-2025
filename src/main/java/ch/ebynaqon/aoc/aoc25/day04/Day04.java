@@ -6,29 +6,30 @@ import java.util.List;
 
 interface Day04 {
 
-    static ProblemInput parseProblem(RawProblemInput input) {
-        List<ProblemSample> samples = input.getLines().stream().map(Day04::parseLine).toList();
-        return new ProblemInput(samples);
-    }
-
-    private static ProblemSample parseLine(String input) {
-        return new ProblemSample(Long.parseLong(input));
+    static PaperRollMap parseProblem(RawProblemInput input) {
+        List<String> lines = input.getLines();
+        int rows = lines.size();
+        int cols = lines.getFirst().length();
+        int[][] values = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            String line = lines.get(i);
+            for (int j = 0; j < cols; j++) {
+                values[i][j] = line.charAt(j) == '@' ? 1 : 0;
+            }
+        }
+        return new PaperRollMap(values);
     }
 
     static long solvePart1(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).min().orElseThrow();
+        PaperRollMap problem = parseProblem(input);
+        return 0;
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).max().orElseThrow();
+        PaperRollMap problem = parseProblem(input);
+        return 0;
     }
 }
 
-record ProblemInput(List<ProblemSample> samples) {
+record PaperRollMap(int[][] grid) {
 }
-
-record ProblemSample(long value) {
-}
-
