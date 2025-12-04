@@ -48,18 +48,67 @@ class Day04Test {
     }
 
     @Test
-    @Disabled
+    void mapAccessWorks() {
+        PaperRollMap map = new PaperRollMap(
+                new int[][]{
+                        {0, 0, 1},
+                        {1, 1, 1},
+                        {1, 1, 0}
+                }
+        );
+
+        assertThat(map.get(-1,-1)).isEqualTo(0);
+        assertThat(map.get(-1,0)).isEqualTo(0);
+        assertThat(map.get(-1,1)).isEqualTo(0);
+        assertThat(map.get(-1,2)).isEqualTo(0);
+        assertThat(map.get(-1,3)).isEqualTo(0);
+
+        assertThat(map.get(0,-1)).isEqualTo(0);
+        assertThat(map.get(0,0)).isEqualTo(0);
+        assertThat(map.get(0,1)).isEqualTo(0);
+        assertThat(map.get(0,2)).isEqualTo(1);
+        assertThat(map.get(0,3)).isEqualTo(0);
+
+        assertThat(map.get(1,-1)).isEqualTo(0);
+        assertThat(map.get(1,0)).isEqualTo(1);
+        assertThat(map.get(1,1)).isEqualTo(1);
+        assertThat(map.get(1,2)).isEqualTo(1);
+        assertThat(map.get(1,3)).isEqualTo(0);
+
+        assertThat(map.get(2,-1)).isEqualTo(0);
+        assertThat(map.get(2,0)).isEqualTo(1);
+        assertThat(map.get(2,1)).isEqualTo(1);
+        assertThat(map.get(2,2)).isEqualTo(0);
+        assertThat(map.get(2,3)).isEqualTo(0);
+
+        assertThat(map.get(3,-1)).isEqualTo(0);
+        assertThat(map.get(3,0)).isEqualTo(0);
+        assertThat(map.get(3,1)).isEqualTo(0);
+        assertThat(map.get(3,2)).isEqualTo(0);
+        assertThat(map.get(3,3)).isEqualTo(0);
+    }
+
+    @Test
     void solvePart1UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                ..@@.@@@@.
+                @@@.@.@.@@
+                @@@@@.@.@@
+                @.@@@@..@.
+                @@.@@@@.@@
+                .@@@@@@@.@
+                .@.@.@.@@@
+                @.@@@.@@@@
+                .@@@@@@@@.
+                @.@.@@@.@.
                 """);
 
         // when
         var result = Day04.solvePart1(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(13);
     }
 
     @Test
