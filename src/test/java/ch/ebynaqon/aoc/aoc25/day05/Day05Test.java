@@ -1,7 +1,6 @@
 package ch.ebynaqon.aoc.aoc25.day05;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -109,7 +108,6 @@ class Day05Test {
     }
 
     @Test
-    @Disabled
     void solvePart2() {
         // given
         RawProblemInput input = RawProblemInput.fromResource("/day05.txt");
@@ -118,7 +116,7 @@ class Day05Test {
         var result = Day05.solvePart2(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(369761800782619L);
     }
 
     @Nested

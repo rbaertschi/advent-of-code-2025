@@ -3,7 +3,6 @@ package ch.ebynaqon.aoc.aoc25.day05;
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,8 +28,7 @@ interface Day05 {
     }
 
     static long solvePart2(RawProblemInput input) {
-        List<FreshRange> freshRanges = parseProblem(input).freshRanges().stream()
-                .sorted(Comparator.comparing(FreshRange::from)).toList();
+        List<FreshRange> freshRanges = parseProblem(input).freshRanges();
         List<FreshRange> reducedFreshRanges = new ArrayList<>();
         for (FreshRange freshRange : freshRanges) {
             reducedFreshRanges = merge(reducedFreshRanges, freshRange);
