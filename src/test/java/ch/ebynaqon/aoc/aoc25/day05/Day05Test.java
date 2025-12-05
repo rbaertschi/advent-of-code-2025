@@ -38,12 +38,12 @@ class Day05Test {
                 new FreshRange(16, 20),
                 new FreshRange(12, 18)
         ), List.of(
-                1,
-                5,
-                8,
-                11,
-                17,
-                32
+                1L,
+                5L,
+                8L,
+                11L,
+                17L,
+                32L
         )));
     }
 
@@ -72,7 +72,6 @@ class Day05Test {
     }
 
     @Test
-    @Disabled
     void solvePart1() {
         // given input from https://adventofcode.com/2025/day/5/input
         RawProblemInput input = RawProblemInput.fromResource("/day05.txt");
@@ -81,7 +80,7 @@ class Day05Test {
         var result = Day05.solvePart1(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(635);
     }
 
     @Test

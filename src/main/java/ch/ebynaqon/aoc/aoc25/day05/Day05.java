@@ -10,13 +10,13 @@ interface Day05 {
     static ProblemInput parseProblem(RawProblemInput input) {
         String[] freshRangesAndIds = input.getWholeInput().split("\n\n");
         List<FreshRange> freshRanges = Stream.of(freshRangesAndIds[0].split("\n")).map(Day05::parseFreshRange).toList();
-        List<Integer> ids = Stream.of(freshRangesAndIds[1].split("\n")).map(Integer::parseInt).toList();
+        List<Long> ids = Stream.of(freshRangesAndIds[1].split("\n")).map(Long::parseLong).toList();
         return new ProblemInput(freshRanges, ids);
     }
 
     private static FreshRange parseFreshRange(String input) {
         String[] fromAndTo = input.split("-");
-        return new FreshRange(Integer.parseInt(fromAndTo[0]), Integer.parseInt(fromAndTo[1]));
+        return new FreshRange(Long.parseLong(fromAndTo[0]), Long.parseLong(fromAndTo[1]));
     }
 
     static long solvePart1(RawProblemInput input) {
@@ -30,11 +30,11 @@ interface Day05 {
     }
 }
 
-record ProblemInput(List<FreshRange> freshRanges, List<Integer> ids) {
+record ProblemInput(List<FreshRange> freshRanges, List<Long> ids) {
 }
 
-record FreshRange(int from, int to) {
-    public boolean contains(int id) {
+record FreshRange(long from, long to) {
+    public boolean contains(long id) {
         return id >= from && id <= to;
     }
 }
