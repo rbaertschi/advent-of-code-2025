@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 class Template {
     static void main() throws IOException {
-        int day = 5;
+        int day = 6;
         String dayWithLeadingZero = String.format("%02d", day);
         Path javaSourcePackage = Path.of("src/main/java/ch/ebynaqon/aoc/aoc25/day" + dayWithLeadingZero);
         Path javaTestPackage = Path.of("src/test/java/ch/ebynaqon/aoc/aoc25/day" + dayWithLeadingZero);
