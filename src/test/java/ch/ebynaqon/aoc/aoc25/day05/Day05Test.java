@@ -15,7 +15,17 @@ class Day05Test {
     void parseProblemInput() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                3-5
+                10-14
+                16-20
+                12-18
+                
+                1
+                5
+                8
+                11
+                17
+                32
                 """);
 
         // when
@@ -23,7 +33,17 @@ class Day05Test {
 
         // then
         assertThat(actual).isEqualTo(new ProblemInput(List.of(
-                new ProblemSample(42L)
+                new FreshRange(3, 5),
+                new FreshRange(10, 14),
+                new FreshRange(16, 20),
+                new FreshRange(12, 18)
+        ), List.of(
+                1,
+                5,
+                8,
+                11,
+                17,
+                32
         )));
     }
 
