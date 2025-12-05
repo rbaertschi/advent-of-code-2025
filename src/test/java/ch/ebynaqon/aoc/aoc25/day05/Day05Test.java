@@ -2,6 +2,7 @@ package ch.ebynaqon.aoc.aoc25.day05;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -84,18 +85,27 @@ class Day05Test {
     }
 
     @Test
-    @Disabled
     void solvePart2UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                3-5
+                10-14
+                16-20
+                12-18
+                
+                1
+                5
+                8
+                11
+                17
+                32
                 """);
 
         // when
         var result = Day05.solvePart2(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(14);
     }
 
     @Test
@@ -111,5 +121,55 @@ class Day05Test {
         assertThat(result).isEqualTo(42);
     }
 
+    @Nested
+    class FreshRangeTest {
+        @Test
+        void intersect_with_non_intersecting_before() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(-14, -4));
+            assertThat(actual).isFalse();
+        }
+
+        @Test
+        void intersect_with_non_intersecting_after() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(14, 20));
+            assertThat(actual).isFalse();
+        }
+
+        @Test
+        void intersect_with_intersecting_overflow_end() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(4, 20));
+            assertThat(actual).isTrue();
+        }
+
+        @Test
+        void intersect_with_intersecting_overflow_start() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(-4, 5));
+            assertThat(actual).isTrue();
+        }
+
+        @Test
+        void intersect_with_containing() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(4, 8));
+            assertThat(actual).isTrue();
+        }
+
+        @Test
+        void intersect_with_contained() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(-4, 18));
+            assertThat(actual).isTrue();
+        }
+
+        @Test
+        void intersect_with_connected_end() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(11, 20));
+            assertThat(actual).isFalse();
+        }
+
+        @Test
+        void intersect_with_connected_start() {
+            boolean actual = new FreshRange(1, 10).intersects(new FreshRange(-5, 0));
+            assertThat(actual).isFalse();
+        }
+    }
 }
 

@@ -2,8 +2,12 @@ package ch.ebynaqon.aoc.aoc25.day05;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static java.util.function.Predicate.not;
 
 interface Day05 {
 
@@ -25,8 +29,26 @@ interface Day05 {
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return 0;
+        List<FreshRange> freshRanges = parseProblem(input).freshRanges().stream()
+                .sorted(Comparator.comparing(FreshRange::from)).toList();
+        List<FreshRange> reducedFreshRanges = new ArrayList<>();
+        for (FreshRange freshRange : freshRanges) {
+            reducedFreshRanges = merge(reducedFreshRanges, freshRange);
+        }
+        return reducedFreshRanges.stream().mapToLong(FreshRange::length).sum();
+    }
+
+    static List<FreshRange> merge(List<FreshRange> reducedFreshRanges, FreshRange freshRange) {
+        List<FreshRange> intersecting = reducedFreshRanges.stream().filter(freshRange::intersects).toList();
+        List<FreshRange> reduced = new ArrayList<>(reducedFreshRanges.stream().filter(not(freshRange::intersects)).toList());
+        if (intersecting.isEmpty()) {
+            reduced.add(freshRange);
+        } else {
+            long from = Math.min(intersecting.stream().mapToLong(FreshRange::from).min().getAsLong(), freshRange.from());
+            long to = Math.max(intersecting.stream().mapToLong(FreshRange::to).max().getAsLong(), freshRange.to());
+            reduced.add(new FreshRange(from, to));
+        }
+        return reduced;
     }
 }
 
@@ -36,6 +58,15 @@ record ProblemInput(List<FreshRange> freshRanges, List<Long> ids) {
 record FreshRange(long from, long to) {
     public boolean contains(long id) {
         return id >= from && id <= to;
+    }
+
+    public long length() {
+        return to - from + 1;
+    }
+
+    public boolean intersects(FreshRange other) {
+        return contains(other.from()) || contains(other.to())
+               || other.contains(from) || other.contains(to);
     }
 }
 
