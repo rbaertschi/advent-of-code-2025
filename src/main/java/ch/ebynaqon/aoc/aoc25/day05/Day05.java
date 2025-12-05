@@ -21,7 +21,7 @@ interface Day05 {
 
     static long solvePart1(RawProblemInput input) {
         ProblemInput problem = parseProblem(input);
-        return 0;
+        return problem.ids().stream().filter(id -> problem.freshRanges().stream().anyMatch(freshRange -> freshRange.contains(id))).count();
     }
 
     static long solvePart2(RawProblemInput input) {
@@ -34,5 +34,8 @@ record ProblemInput(List<FreshRange> freshRanges, List<Integer> ids) {
 }
 
 record FreshRange(int from, int to) {
+    public boolean contains(int id) {
+        return id >= from && id <= to;
+    }
 }
 

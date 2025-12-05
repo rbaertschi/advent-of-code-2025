@@ -48,18 +48,27 @@ class Day05Test {
     }
 
     @Test
-    @Disabled
     void solvePart1UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                3-5
+                10-14
+                16-20
+                12-18
+                
+                1
+                5
+                8
+                11
+                17
+                32
                 """);
 
         // when
         var result = Day05.solvePart1(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
