@@ -7,7 +7,7 @@ import java.util.List;
 
 interface Day06 {
 
-    static List<Operation> parseProblem(RawProblemInput input) {
+    static List<Operation> parseProblem(RawProblemInput input, boolean vertical) {
         List<String> lines = input.getLines();
         String operatorLine = lines.getLast();
         //noinspection OptionalGetWithoutIsPresent
@@ -19,7 +19,9 @@ interface Day06 {
         for (int problemNumber = 0; problemNumber < numberOfProblems; problemNumber++) {
             Integer startColumn = problemStartColumn.get(problemNumber);
             Integer endColumn = (problemNumber == numberOfProblems - 1 ? maxColumn : problemStartColumn.get(problemNumber + 1)) - 1;
-            ArrayList<Integer> numbers = determineProblemInputNumbersHorizontal(numberLines, startColumn, endColumn);
+            ArrayList<Integer> numbers = vertical
+                    ? determineProblemInputNumbersVertical(numberLines, startColumn, endColumn)
+                    : determineProblemInputNumbersHorizontal(numberLines, startColumn, endColumn);
             problems.add(Operation.resolve(operatorLine.charAt(startColumn), numbers));
         }
         return problems;
@@ -45,14 +47,29 @@ interface Day06 {
         return numbers;
     }
 
+    private static ArrayList<Integer> determineProblemInputNumbersVertical(List<String> numberLines, int startColumn, Integer endColumn) {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (int column = startColumn; column <= endColumn; column++) {
+            StringBuilder number = new StringBuilder();
+            for (var line : numberLines) {
+                if (column < line.length()) {
+                    number.append(line.charAt(column));
+                }
+            }
+            String numberToParse = number.toString().trim();
+            if (!numberToParse.isBlank()) {
+                numbers.add(Integer.parseInt(numberToParse));
+            }
+        }
+        return numbers;
+    }
+
     static long solvePart1(RawProblemInput input) {
-        List<Operation> operations = parseProblem(input);
-        return operations.stream().mapToLong(Operation::compute).sum();
+        return parseProblem(input, false).stream().mapToLong(Operation::compute).sum();
     }
 
     static long solvePart2(RawProblemInput input) {
-        List<Operation> operations = parseProblem(input);
-        return 0;
+        return parseProblem(input, true).stream().mapToLong(Operation::compute).sum();
     }
 }
 

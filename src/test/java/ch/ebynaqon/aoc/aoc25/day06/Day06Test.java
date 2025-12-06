@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Day06Test {
 
     @Test
-    void parseProblemInput() {
+    void parseProblemInputHorizontal() {
         // given
         RawProblemInput input = new RawProblemInput("""
                 123 328  51 64\s
@@ -22,7 +22,7 @@ class Day06Test {
                 """);
 
         // when
-        var actual = Day06.parseProblem(input);
+        var actual = Day06.parseProblem(input, false);
 
         // then
         assertThat(actual).isEqualTo(List.of(
@@ -30,6 +30,28 @@ class Day06Test {
                 new Addition(List.of(328, 64, 98)),
                 new Multiplication(List.of(51, 387, 215)),
                 new Addition(List.of(64, 23, 314))
+        ));
+    }
+
+    @Test
+    void parseProblemInputVertical() {
+        // given
+        RawProblemInput input = new RawProblemInput("""
+                123 328  51 64\s
+                 45 64  387 23\s
+                  6 98  215 314
+                *   +   *   + \s
+                """);
+
+        // when
+        var actual = Day06.parseProblem(input, true);
+
+        // then
+        assertThat(actual).isEqualTo(List.of(
+                new Multiplication(List.of(1, 24, 356)),
+                new Addition(List.of(369, 248, 8)),
+                new Multiplication(List.of(32, 581, 175)),
+                new Addition(List.of(623, 431, 4))
         ));
     }
 
@@ -63,18 +85,20 @@ class Day06Test {
     }
 
     @Test
-    @Disabled
     void solvePart2UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                123 328  51 64\s
+                 45 64  387 23\s
+                  6 98  215 314
+                *   +   *   + \s
                 """);
 
         // when
         var result = Day06.solvePart2(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(3263827);
     }
 
     @Test
