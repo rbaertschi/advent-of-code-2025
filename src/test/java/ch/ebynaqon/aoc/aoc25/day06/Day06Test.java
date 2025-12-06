@@ -26,26 +26,28 @@ class Day06Test {
 
         // then
         assertThat(actual).isEqualTo(List.of(
-                new Multiplication(List.of(123 ,45 ,6)),
-                new Addition(List.of(328 ,64 ,98)),
-                new Multiplication(List.of(51 ,387 ,215)),
-                new Addition(List.of(64 ,23 ,314))
+                new Multiplication(List.of(123, 45, 6)),
+                new Addition(List.of(328, 64, 98)),
+                new Multiplication(List.of(51, 387, 215)),
+                new Addition(List.of(64, 23, 314))
         ));
     }
 
     @Test
-    @Disabled
     void solvePart1UsingExample() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                123 328  51 64\s
+                 45 64  387 23\s
+                  6 98  215 314
+                *   +   *   + \s
                 """);
 
         // when
         var result = Day06.solvePart1(input);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(4277556);
     }
 
     @Test
