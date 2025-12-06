@@ -15,16 +15,22 @@ class Day06Test {
     void parseProblemInput() {
         // given
         RawProblemInput input = new RawProblemInput("""
-                42
+                123 328  51 64\s
+                 45 64  387 23\s
+                  6 98  215 314
+                *   +   *   + \s
                 """);
 
         // when
         var actual = Day06.parseProblem(input);
 
         // then
-        assertThat(actual).isEqualTo(new ProblemInput(List.of(
-                new ProblemSample(42L)
-        )));
+        assertThat(actual).isEqualTo(List.of(
+                new Multiplication(List.of(123 ,45 ,6)),
+                new Addition(List.of(328 ,64 ,98)),
+                new Multiplication(List.of(51 ,387 ,215)),
+                new Addition(List.of(64 ,23 ,314))
+        ));
     }
 
     @Test
