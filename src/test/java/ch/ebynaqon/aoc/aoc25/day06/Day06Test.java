@@ -33,6 +33,48 @@ class Day06Test {
     }
 
     @Test
+    void splitIntoProblems() {
+        // given
+        List<String> input = List.of(
+                "123 328  51 64 ",
+                " 45 64  387 23 ",
+                "  6 98  215 314",
+                "*   +   *   +  "
+        );
+
+        // when
+        var actual = Day06.splitIntoProblems(input);
+
+        // then
+        assertThat(actual).isEqualTo(List.of(
+                List.of(
+                        "123",
+                        " 45",
+                        "  6",
+                        "*  "
+                ),
+                List.of(
+                        "328",
+                        "64 ",
+                        "98 ",
+                        "+  "
+                ),
+                List.of(
+                        " 51",
+                        "387",
+                        "215",
+                        "*  "
+                ),
+                List.of(
+                        "64 ",
+                        "23 ",
+                        "314",
+                        "+  "
+                )
+        ));
+    }
+
+    @Test
     void parseProblemInputVertical() {
         // given
         RawProblemInput input = new RawProblemInput("""

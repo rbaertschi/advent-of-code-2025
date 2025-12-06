@@ -9,59 +9,55 @@ interface Day06 {
 
     static List<Operation> parseProblem(RawProblemInput input, boolean vertical) {
         List<String> lines = input.getLines();
-        String operatorLine = lines.getLast();
-        //noinspection OptionalGetWithoutIsPresent
-        int maxColumn = lines.stream().mapToInt(String::length).max().getAsInt() + 1;
-        List<String> numberLines = lines.subList(0, lines.size() - 1);
-        List<Integer> problemStartColumn = determineProblemStartColumns(operatorLine);
-        int numberOfProblems = problemStartColumn.size();
-        ArrayList<Operation> problems = new ArrayList<>(numberOfProblems);
-        for (int problemNumber = 0; problemNumber < numberOfProblems; problemNumber++) {
-            Integer startColumn = problemStartColumn.get(problemNumber);
-            Integer endColumn = (problemNumber == numberOfProblems - 1 ? maxColumn : problemStartColumn.get(problemNumber + 1)) - 1;
-            ArrayList<Integer> numbers = vertical
-                    ? determineProblemInputNumbersVertical(numberLines, startColumn, endColumn)
-                    : determineProblemInputNumbersHorizontal(numberLines, startColumn, endColumn);
-            problems.add(Operation.resolve(operatorLine.charAt(startColumn), numbers));
+        List<List<String>> subProblems = splitIntoProblems(lines);
+        return subProblems.stream().map(subProblem -> {
+            char operation = subProblem.getLast().trim().charAt(0);
+            List<String> numberLines = subProblem.subList(0, subProblem.size() - 1);
+            return Operation.resolve(operation, parseNumbers(numberLines, vertical));
+        }).toList();
+    }
+
+    static List<Integer> parseNumbers(List<String> lines, boolean vertical) {
+        return (vertical ? rotateLines(lines) : lines).stream().map(String::trim).map(Integer::parseInt).toList();
+    }
+
+    static List<String> rotateLines(List<String> lines) {
+        int numberOfColumns = lines.stream().mapToInt(String::length).reduce(0, Math::max);
+        ArrayList<String> rotated = new ArrayList<>(numberOfColumns);
+        for (int column = 0; column < numberOfColumns; column++) {
+            StringBuilder newLine = new StringBuilder();
+            for (String line : lines) {
+                if (column < line.length()) {
+                    newLine.append(line.charAt(column));
+                }
+            }
+            rotated.add(newLine.toString());
+        }
+        return rotated;
+    }
+
+    static List<List<String>> splitIntoProblems(List<String> inputLines) {
+        List<List<String>> problems = new ArrayList<>();
+        int maxLength = inputLines.stream().mapToInt(String::length).reduce(0, Math::max);
+        int nextStartColumn = 0;
+        for (int column = 0; column < maxLength - 1; column++) {
+            if (isBlankColumn(column, inputLines)) {
+                int startColumn = nextStartColumn;
+                int endColumn = column;
+                problems.add(inputLines.stream().map(line -> line.substring(startColumn, Math.min(endColumn, line.length()))).toList());
+                nextStartColumn = column + 1;
+            }
+        }
+        // handle last column
+        if (nextStartColumn < maxLength) {
+            int startColumn = nextStartColumn;
+            problems.add(inputLines.stream().map(line -> line.substring(startColumn)).toList());
         }
         return problems;
     }
 
-    private static List<Integer> determineProblemStartColumns(String operatorLine) {
-        List<Integer> problemStartColumn = new ArrayList<>();
-        for (int i = 0; i < operatorLine.length(); i++) {
-            char charInColumn = operatorLine.charAt(i);
-            if (charInColumn == '*' || charInColumn == '+') {
-                problemStartColumn.add(i);
-            }
-        }
-        return problemStartColumn;
-    }
-
-    private static ArrayList<Integer> determineProblemInputNumbersHorizontal(List<String> numberLines, int startColumn, Integer endColumn) {
-        int numberCount = numberLines.size();
-        ArrayList<Integer> numbers = new ArrayList<>(numberCount);
-        for (String line : numberLines) {
-            numbers.add(Integer.parseInt(line.substring(startColumn, Math.min(endColumn, line.length())).trim()));
-        }
-        return numbers;
-    }
-
-    private static ArrayList<Integer> determineProblemInputNumbersVertical(List<String> numberLines, int startColumn, Integer endColumn) {
-        ArrayList<Integer> numbers = new ArrayList<>();
-        for (int column = startColumn; column <= endColumn; column++) {
-            StringBuilder number = new StringBuilder();
-            for (var line : numberLines) {
-                if (column < line.length()) {
-                    number.append(line.charAt(column));
-                }
-            }
-            String numberToParse = number.toString().trim();
-            if (!numberToParse.isBlank()) {
-                numbers.add(Integer.parseInt(numberToParse));
-            }
-        }
-        return numbers;
+    static boolean isBlankColumn(int column, List<String> lines) {
+        return lines.stream().allMatch(line -> line.length() <= column || line.charAt(column) == ' ');
     }
 
     static long solvePart1(RawProblemInput input) {
@@ -98,3 +94,4 @@ record Multiplication(List<Integer> numbers) implements Operation {
         return numbers.stream().mapToLong(i -> i).reduce(1, (a, b) -> a * b);
     }
 }
+
