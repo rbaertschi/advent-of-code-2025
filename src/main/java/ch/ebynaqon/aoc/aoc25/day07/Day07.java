@@ -2,6 +2,7 @@ package ch.ebynaqon.aoc.aoc25.day07;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
+import java.util.Arrays;
 import java.util.List;
 
 interface Day07 {
@@ -44,6 +45,30 @@ interface Day07 {
     }
 
     static long solvePart2(RawProblemInput input) {
-        return 0;
+        List<String> lines = input.getLines();
+        int width = lines.getFirst().length();
+        long[] laserCounts = new long[width];
+        for (var line : lines) {
+            long[] newLaserCounts = new long[width];
+            for (int column = 0; column < width; column++) {
+                char charOnLine = line.charAt(column);
+                if (charOnLine == '.') {
+                    newLaserCounts[column] += laserCounts[column];
+                } else if (charOnLine == 'S') {
+                    newLaserCounts[column] = 1;
+                } else if (charOnLine == '^') {
+                    if (column > 0) {
+                        newLaserCounts[column - 1] += laserCounts[column];
+                    }
+                    if (column < width - 1) {
+                        newLaserCounts[column + 1] += laserCounts[column];
+                    }
+                } else {
+                    throw new IllegalStateException("Unexpected character: " + charOnLine);
+                }
+            }
+            laserCounts = newLaserCounts;
+        }
+        return Arrays.stream(laserCounts).sum();
     }
 }
