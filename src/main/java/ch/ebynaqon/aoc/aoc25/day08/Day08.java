@@ -2,33 +2,38 @@ package ch.ebynaqon.aoc.aoc25.day08;
 
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
+import java.util.Arrays;
 import java.util.List;
 
 interface Day08 {
 
-    static ProblemInput parseProblem(RawProblemInput input) {
-        List<ProblemSample> samples = input.getLines().stream().map(Day08::parseLine).toList();
-        return new ProblemInput(samples);
+    static List<JunctionBox> parseProblem(RawProblemInput input) {
+        return input.getLines().stream().map(Day08::parseLine).toList();
     }
 
-    private static ProblemSample parseLine(String input) {
-        return new ProblemSample(Long.parseLong(input));
+    private static JunctionBox parseLine(String input) {
+        String[] xYZ = input.split(",");
+        if (xYZ.length != 3) {
+            throw new IllegalArgumentException("Position of junction box does not have 3 coordinates: %s".formatted(input));
+        }
+        return new JunctionBox(
+                Integer.parseInt(xYZ[0]),
+                Integer.parseInt(xYZ[1]),
+                Integer.parseInt(xYZ[2])
+        );
     }
 
     static long solvePart1(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).min().orElseThrow();
+        List<JunctionBox> problem = parseProblem(input);
+        return 0;
     }
 
     static long solvePart2(RawProblemInput input) {
-        ProblemInput problem = parseProblem(input);
-        return problem.samples().stream().mapToLong(ProblemSample::value).max().orElseThrow();
+        List<JunctionBox> problem = parseProblem(input);
+        return 0;
     }
 }
 
-record ProblemInput(List<ProblemSample> samples) {
-}
-
-record ProblemSample(long value) {
+record JunctionBox(int x, int y, int z) {
 }
 
