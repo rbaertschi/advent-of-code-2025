@@ -74,8 +74,50 @@ interface Day08 {
     }
 
     static long solvePart2(RawProblemInput input) {
-        List<JunctionBox> problem = parseProblem(input);
-        return 0;
+        List<JunctionBox> junctionBoxes = parseProblem(input);
+        List<Connection> connections = new ArrayList<>();
+        for (int i = 0; i < junctionBoxes.size() - 1; i++) {
+            JunctionBox fromBox = junctionBoxes.get(i);
+            for (int j = i + 1; j < junctionBoxes.size(); j++) {
+                JunctionBox toBox = junctionBoxes.get(j);
+                double distance = fromBox.distanceTo(toBox);
+                connections.add(new Connection(i, j, distance));
+            }
+        }
+        List<Connection> smallestDistanceConnections = connections.stream()
+                .sorted(Comparator.comparing(Connection::distance))
+                .toList();
+        int[] circuit = new int[junctionBoxes.size()];
+        for (int boxId = 0; boxId < junctionBoxes.size(); boxId++) {
+            circuit[boxId] = boxId;
+        }
+        for (var connection : smallestDistanceConnections) {
+            int fromBox = connection.fromBoxId();
+            int toBox = connection.toBoxId();
+            var fromSet = circuit[fromBox];
+            var toSet = circuit[toBox];
+            if (fromSet != toSet) {
+                for (int boxId = 0; boxId < junctionBoxes.size(); boxId++) {
+                    if (circuit[boxId] == toSet) {
+                        circuit[boxId] = fromSet;
+                    }
+                }
+                if (isOneCircuit(circuit)) {
+                    return junctionBoxes.get(fromBox).x() * junctionBoxes.get(toBox).x();
+                }
+            }
+        }
+        throw new IllegalArgumentException("No solution possible");
+    }
+
+    static boolean isOneCircuit(int[] circuit) {
+        int reference = circuit[0];
+        for (int i = 1; i < circuit.length; i++) {
+            if (circuit[i] != reference) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
