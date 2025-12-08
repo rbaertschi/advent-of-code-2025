@@ -92,14 +92,13 @@ class Day08Test {
                 """);
 
         // when
-        var result = Day08.solvePart1(input, 9);
+        var result = Day08.solvePart1(input, 10);
 
         // then
         assertThat(result).isEqualTo(40);
     }
 
     @Test
-    @Disabled
     void solvePart1() {
         // given input from https://adventofcode.com/2025/day/8/input
         RawProblemInput input = RawProblemInput.fromResource("/day08.txt");
@@ -108,7 +107,7 @@ class Day08Test {
         var result = Day08.solvePart1(input, 1000);
 
         // then
-        assertThat(result).isEqualTo(42);
+        assertThat(result).isEqualTo(131580);
     }
 
     @Test

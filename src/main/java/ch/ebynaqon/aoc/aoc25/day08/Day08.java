@@ -3,11 +3,15 @@ package ch.ebynaqon.aoc.aoc25.day08;
 import ch.ebynaqon.aoc.helper.RawProblemInput;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
+import static java.util.Comparator.comparingLong;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 interface Day08 {
 
@@ -40,37 +44,31 @@ interface Day08 {
         }
         List<Connection> smallestDistanceConnections = connections.stream()
                 .sorted(Comparator.comparing(Connection::distance))
+                .limit(maxConnections)
                 .toList();
-        int[] setIndex = new int[junctionBoxes.size()];
-        for (int i = 0; i < junctionBoxes.size(); i++) {
-            setIndex[i] = i;
+        int[] circuit = new int[junctionBoxes.size()];
+        for (int boxId = 0; boxId < junctionBoxes.size(); boxId++) {
+            circuit[boxId] = boxId;
         }
-        int nextSetId = 1;
-        int numberOfNewConnections = 0;
         for (var connection : smallestDistanceConnections) {
-            if (numberOfNewConnections >= maxConnections) {
-                break;
-            }
             int fromBox = connection.fromBoxId();
             int toBox = connection.toBoxId();
-            var fromSet = setIndex[fromBox];
-            var toSet = setIndex[toBox];
+            var fromSet = circuit[fromBox];
+            var toSet = circuit[toBox];
             if (fromSet != toSet) {
-                for (int i = 0; i < junctionBoxes.size(); i++) {
-                    if (setIndex[i] == toSet) {
-                        setIndex[i] = fromSet;
+                for (int boxId = 0; boxId < junctionBoxes.size(); boxId++) {
+                    if (circuit[boxId] == toSet) {
+                        circuit[boxId] = fromSet;
                     }
                 }
-                numberOfNewConnections++;
             }
         }
-        Collection<Long> setSizes = Arrays.stream(setIndex)
-                .filter(i -> i > 0)
-                .mapToObj(i -> (Integer) i)
-                .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
+        Collection<Long> setSizes = stream(circuit)
+                .boxed()
+                .collect(groupingBy(identity(), counting()))
                 .values();
         return setSizes.stream()
-                .sorted(Comparator.comparingLong(Long::longValue).reversed())
+                .sorted(comparingLong(Long::longValue).reversed())
                 .limit(3)
                 .reduce(1L, (a, b) -> a * b);
     }
@@ -81,7 +79,7 @@ interface Day08 {
     }
 }
 
-record JunctionBox(int x, int y, int z) {
+record JunctionBox(long x, long y, long z) {
 
     public double distanceTo(JunctionBox other) {
         return Math.sqrt((other.x - x) * (other.x - x)
